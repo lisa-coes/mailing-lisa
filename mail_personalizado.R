@@ -7,7 +7,7 @@ library(janitor)
 library(purrr)
 library(blastula)
 
-# Crear credenciales. Provider es el servicio de correo electrónico.
+# Crear credenciales. Provider es el servicio de correo electrónico. # Se solicita clave, se consigue en los ajustes de Gmail ('Contraseña de aplicación')
 
 create_smtp_creds_file(
   file = 'gmail_creds',
