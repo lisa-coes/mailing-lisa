@@ -16,7 +16,7 @@ create_smtp_creds_file(
 )
 
 # Base de datos
-destinatarios <- read.csv2(file = 'data/test_data_2.csv')
+destinatarios <- read.csv2(file = 'data/directorios-ines.csv')
 destinatarios <- clean_names(destinatarios)
 
 # Selección de destinatarios
@@ -88,7 +88,7 @@ juancastillov@uchile.cl | jc-castillo.com</div>
     smtp_send(
       to = correo,
       from = c('Juan Carlos Castillo'= "juancastillov@uchile.cl"),
-      subject = "[PRUEBA 1] Invitación a Participar en Encuesta sobre Ciencia Abierta",
+      subject = "Invitación a participar en Encuesta sobre Ciencia Abierta",
       credentials = creds_file("gmail_creds")
     )
 }

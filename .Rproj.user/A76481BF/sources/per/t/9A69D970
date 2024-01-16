@@ -1,0 +1,26 @@
+{
+    "id": "9A69D970",
+    "path": "~/mailing-lisa/mail_personalizado.R",
+    "project_path": "mail_personalizado.R",
+    "type": "r_source",
+    "hash": "4196419795",
+    "contents": "",
+    "dirty": false,
+    "created": 1705368698812.0,
+    "source_on_save": false,
+    "relative_order": 1,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "13,24",
+        "scrollLine": "6"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1705374726,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1705374726017,
+    "read_only": false,
+    "read_only_alternatives": []
+}

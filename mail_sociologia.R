@@ -16,7 +16,7 @@ create_smtp_creds_file(
 )
 
 # Base de datos
-destinatarios <- read.csv2(file = 'data/test_data_2.csv')
+destinatarios <- read.csv2(file = 'data/directorios-sociologia.csv')
 destinatarios <- clean_names(destinatarios)
 
 # Selección de destinatarios
@@ -47,17 +47,19 @@ enviar_correo <- function(nombre, correo) {
       
 <b>{cargo}.</b>
 
-Espero que se encuentre bien. Mi nombre es Juan Carlos Castillo y soy coordinador del Laboratorio de Investigación Social Abierta [LISA](lisa-coes.cl) del Centro de Estudios de Conflicto y Cohesión Social [COES](coes.cl). Nos dirigimos a usted en su calidad de representante del Proyecto Innovación en Educación Superior (InES) en Ciencia Abierta de su institución con el propósito de invitarle a contestar y difundir una encuesta sobre Ciencia Abierta dirigida a académicos, académicas e investigadores de ciencias sociales en Chile. 
+Espero que se encuentre bien. Mi nombre es Juan Carlos Castillo y soy coordinador del Laboratorio de Investigación Social Abierta [LISA](lisa-coes.cl) del Centro de Estudios de Conflicto y Cohesión Social [COES](coes.cl). Nos dirigimos a usted en su calidad de director de escuela con el propósito de invitarle a contestar y difundir una encuesta sobre Ciencia Abierta dirigida a académicos, académicas e investigadores de ciencias sociales en Chile. 
 
-Desde LISA estamos desarrollando la primera encuesta que analiza el conocimiento, creencias y prácticas de Ciencia Abierta en investigadores de Ciencias Sociales en Chile. Este esfuerzo busca comprender mejor el panorama de la Ciencia Abierta en Chile y permitirá generar recomendaciones y propuestas tanto para el quehacer académico como para las políticas científicas.
+La Ciencia Abierta se ha convertido en un tema crucial en la investigación contemporánea, y su adopción puede tener un impacto significativo en la calidad y la transparencia de nuestras investigaciones. Valoramos la perspectiva que aporta su institución al ámbito de las ciencias sociales y estamos interesados en conocer las opiniones y experiencias de sus académicos en relación con la Ciencia Abierta.
 
-Valoramos su experiencia y trabajo en el proyecto InES y creemos que su participación es crucial para lograr la mejor representatividad en esta encuesta pionera en el campo. Creemos que el involucramiento de InES influirá en la dirección futura de la investigación en educación superior. Por ello, lo/a  invitamos a difundir la encuesta en su institución, así como a resaltar la importancia de la participación de académicos y académicas.
-
-Consistente con los principios de la Ciencia Abierta, los datos estarán disponibles de forma abierta y gratuita en diferentes fases, siendo la primera de uso preferente para los proyectos InES. Esto presenta una oportunidad única para conocer el estado de la Ciencia Abierta tanto a nivel institucional como a nivel nacional, pudiendo influir en la investigación y la innovación en educación superior en Chile.
+La encuesta aborda temas como la colaboración en la investigación, el acceso abierto a datos y resultados, y las percepciones sobre la transparencia en la comunicación científica. La participación en esta encuesta es crucial para comprender mejor las necesidades y desafíos específicos que enfrentan los académicos en su campo.
 
 <b>Puede acceder a la encuesta a través del siguiente enlace: <a href="https://lisa-survey.formr.org/">https://lisa-survey.formr.org/</a>. El cuestionario no debería llevar más de 10 minutos.</b>
 
-Entendemos que puedan surgir dudas respecto a la encuesta y su participación en la misma. Estamos disponibles para agendar una reunión para aclarar dudas y discutir los términos de su participación en la encuesta. Le extendemos nuestro agradecimiento por su tiempo y esperamos contar con su valiosa participación en la primera Encuesta de Ciencia Abierta en Investigación Social en Chile.
+Agradecemos de antemano su participación y colaboración en este importante proyecto. Los resultados de esta encuesta no solo beneficiarán a la comunidad académica, sino que también contribuirán al avance y la mejora continua de la investigación en ciencias sociales.
+
+Si tiene alguna pregunta o inquietud, no dude en ponerse en contacto con nosotros. Entendemos que puedan surgir dudas respecto a la encuesta y su participación en la misma. Estamos disponibles para agendar una reunión para aclarar dudas y discutir los términos de su participación en la encuesta.
+
+Agradecemos sinceramente su tiempo y participación.
 
 Atentamente,
 
@@ -88,7 +90,7 @@ juancastillov@uchile.cl | jc-castillo.com</div>
     smtp_send(
       to = correo,
       from = c('Juan Carlos Castillo'= "juancastillov@uchile.cl"),
-      subject = "[PRUEBA 1] Invitación a Participar en Encuesta sobre Ciencia Abierta",
+      subject = "Invitación a participar en Encuesta sobre Ciencia Abierta",
       credentials = creds_file("gmail_creds")
     )
 }
