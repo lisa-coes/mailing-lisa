@@ -8,7 +8,8 @@ library(purrr)
 library(blastula)
 
 # Crear credenciales. Provider es el servicio de correo electrónico. # Se solicita clave, se consigue en los ajustes de Gmail ('Contraseña de aplicación')
-
+#kevin: rfgr nbln wbyv kuas
+#jc: efdx vnxv orpn rodl
 create_smtp_creds_file(
   file = 'gmail_creds',
   user = 'juancastillov@uchile.cl',
@@ -16,7 +17,7 @@ create_smtp_creds_file(
 )
 
 # Base de datos
-destinatarios <- read.csv2(file = 'data/test_data_3.csv')
+destinatarios <- read.csv(file = 'data/directorios-ines.csv')
 destinatarios <- clean_names(destinatarios)
 
 # Selección de destinatarios
@@ -36,7 +37,7 @@ reemplazar_etiquetas <- function(cuerpo, etiqueta, valor) {
 }
 
 # Crear función para enviar correo
-enviar_correo <- function(nombre, correo) {
+enviar_correo <- function(nombre, correo, cargo) {
   library(blastula)
   library(glue)
   
@@ -47,7 +48,7 @@ enviar_correo <- function(nombre, correo) {
       
 <b>{cargo}.</b>
 
-Espero que se encuentre bien. Mi nombre es Juan Carlos Castillo y soy coordinador del Laboratorio de Investigación Social Abierta [LISA](https://lisa-coes.com) del Centro de Estudios de Conflicto y Cohesión Social [COES](https://coes.cl/). Desde LISA estamos desarrollando la primera encuesta que analiza el conocimiento, creencias y prácticas de Ciencia Abierta en investigadores de Ciencias Sociales en Chile. Este esfuerzo busca comprender mejor el panorama de la Ciencia Abierta en Chile y permitirá generar recomendaciones y propuestas tanto para el quehacer académico como para las políticas científicas.
+Espero que se encuentre bien. Mi nombre es Juan Carlos Castillo y soy coordinador del Laboratorio de Investigación Social Abierta [LISA](https://lisa-coes.com), una iniciativa del Centro de Estudios de Conflicto y Cohesión Social [COES](https://coes.cl/) (FONDAP/ANID 15130009) y del Núcleo Milenio sobre Desigualdades y Oportunidades Digitales [NUDOS](https://www.nudos.cl/) (Milenio ANID/NCS2022_046). Desde LISA estamos desarrollando la primera encuesta que analiza el conocimiento, creencias y prácticas de Ciencia Abierta en investigadores de Ciencias Sociales en Chile. Este esfuerzo busca comprender mejor el panorama de la Ciencia Abierta en Chile y permitirá generar recomendaciones y propuestas tanto para el quehacer académico como para las políticas científicas.
 
 Nos dirigimos a usted en su calidad de representante del Proyecto Innovación en Educación Superior (InES) en Ciencia Abierta de su institución con el propósito de invitarle a contestar y difundir esta encuesta a académicos, académicas e investigadores de ciencias sociales en Chile. Creemos que su participación es crucial para lograr la mejor difusión de esta encuesta en las universidades involucradas en el proyecto. 
 
@@ -74,24 +75,26 @@ Investigador Principal [COES](https://coes.cl/) / [NUDOS](https://www.nudos.cl/)
 
 Coordinador LISA 
 
-juancastillov@uchile.cl | jc-castillo.com
+juancastillov@uchile.cl | jc-castillo.com </div> 
       
     ')), header = image, footer = md(glue::glue('<a href="https://lisa-survey.formr.org/">Encuesta de Ciencia Abierta en Investigación Social (CAIS)</a>')),
   )
   
   # Personalizar el nombre del destinatario en el cuerpo del correo
   etiqueta_nombre <- "{nombre}"  # Etiqueta a reemplazar
+  etiqueta_cargo <- "{cargo}"
   email_template$body <- reemplazar_etiquetas(email_template$body, etiqueta_nombre, nombre)
   
   # Enviar el correo electrónico al destinatario actual
   email_template %>% 
     smtp_send(
       to = correo,
+      bcc = c('Kevin Carrasco' = 'kevin.carrasco@ug.uchile.cl'),
       from = c('Juan Carlos Castillo'= "juancastillov@uchile.cl"),
-      subject = "[PRUEBA 1] Invitación a Participar en Encuesta sobre Ciencia Abierta",
+      subject = "Invitación a Participar en Encuesta sobre Ciencia Abierta",
       credentials = creds_file("gmail_creds")
     )
 }
 
 # Aplicar la función a cada fila del conjunto de datos
-pmap(list(destinatarios$nombre, destinatarios$correo), enviar_correo)
+pmap(list(destinatarios$nombre, destinatarios$correo, destinatarios$cargo), enviar_correo)
