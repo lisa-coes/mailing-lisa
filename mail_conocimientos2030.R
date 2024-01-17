@@ -16,14 +16,15 @@ create_smtp_creds_file(
 )
 
 # Base de datos
-destinatarios <- read.csv2(file = 'data/directorios-conocimientos-2030.csv')
+destinatarios <- read.csv(file = 'data/directorios-conocimientos-2030.csv')
 destinatarios <- clean_names(destinatarios)
 
 # Selección de destinatarios
 
 nombre <- destinatarios$nombre
 cargo <- destinatarios$cargo
-
+nombre
+cargo
 # Imagen de correo
 
 image <- add_image(file = 'invitacion_encuesta.png', alt = 'lisa-survey', width = 1000)
@@ -36,64 +37,64 @@ reemplazar_etiquetas <- function(cuerpo, etiqueta, valor) {
 }
 
 # Crear función para enviar correo
-enviar_correo <- function(nombre, correo) {
+enviar_correo <- function(nombre, correo, cargo) {
   library(blastula)
   library(glue)
-
+  
   # Crear mail. Editar solo el cuerpo si es necesario. 
   email_template <- compose_email(
     body = md(glue::glue(
-      '<center><big><b>Estimado/a {nombre}. </b>
+      '<big><b>Estimado/a {nombre}. </b>
       
 <b>{cargo}.</b>
 
-Espero que se encuentre bien. Mi nombre es Juan Carlos Castillo y soy coordinador del Laboratorio de Investigación Social Abierta [LISA](lisa-coes.cl) del Centro de Estudios de Conflicto y Cohesión Social [COES](coes.cl). Nos dirigimos a usted en su calidad de representante de un Programa Conocimientos 2030 con el propósito de invitarle a contestar y difundir una encuesta sobre Ciencia Abierta dirigida a académicos, académicas e investigadores de ciencias sociales en Chile. 
+Espero que se encuentre bien. Mi nombre es Juan Carlos Castillo y soy coordinador del Laboratorio de Investigación Social Abierta [LISA](https://lisa-coes.com), una iniciativa del Centro de Estudios de Conflicto y Cohesión Social [COES](https://coes.cl/) (FONDAP/ANID 15130009) y del Núcleo Milenio sobre Desigualdades y Oportunidades Digitales [NUDOS](https://www.nudos.cl/) (Milenio ANID/NCS2022_046). Desde LISA estamos desarrollando la primera encuesta que analiza el conocimiento, creencias y prácticas de Ciencia Abierta en investigadores de Ciencias Sociales en Chile. Este esfuerzo busca comprender mejor el panorama de la Ciencia Abierta en Chile y permitirá generar recomendaciones y propuestas tanto para el quehacer académico como para las políticas científicas.
 
-La Ciencia Abierta se ha convertido en un tema crucial en la investigación contemporánea, y su adopción puede tener un impacto significativo en la calidad y la transparencia de nuestras investigaciones. Valoramos la perspectiva que aporta su institución al ámbito de las ciencias sociales y estamos interesados en conocer las opiniones y experiencias de sus académicos en relación con la Ciencia Abierta.
+Nos dirigimos a usted en su calidad de representante de un Programa Conocimientos 2030 con el propósito de invitarle a contestar y difundir una encuesta sobre Ciencia Abierta dirigida a académicos, académicas e investigadores de ciencias sociales en Chile. Creemos que su participación es crucial para lograr la mejor difusión de esta encuesta en las universidades involucradas en el proyecto.
 
-La encuesta aborda temas como la colaboración en la investigación, el acceso abierto a datos y resultados, y las percepciones sobre la transparencia en la comunicación científica. La participación en esta encuesta es crucial para comprender mejor las necesidades y desafíos específicos que enfrentan los académicos en su campo.
+Consistente con los principios de la Ciencia Abierta, los datos estarán disponibles de forma abierta en diferentes fases, siendo la primera de uso preferente para los programas Conocimientos 2030. Esto presenta una oportunidad única para conocer el estado de la Ciencia Abierta tanto a nivel institucional como a nivel nacional, pudiendo influir en la investigación y la innovación en educación superior en Chile.
 
 <b>Puede acceder a la encuesta a través del siguiente enlace: <a href="https://lisa-survey.formr.org/">https://lisa-survey.formr.org/</a>. El cuestionario no debería llevar más de 10 minutos.</b>
 
-Agradecemos de antemano su participación y colaboración en este importante proyecto. Los resultados de esta encuesta no solo beneficiarán a la comunidad académica, sino que también contribuirán al avance y la mejora continua de la investigación en ciencias sociales.
-
-Si tiene alguna pregunta o inquietud, no dude en ponerse en contacto con nosotros.
-
-Agradecemos sinceramente su tiempo y participación.
+Le extendemos nuestro agradecimiento por su tiempo y esperamos contar con su valiosa participación en la primera Encuesta de Ciencia Abierta en Investigación Social en Chile.
 
 Atentamente,
 
-<div style="line-height:30%;">
+<div style="line-height:80%;">
 Juan Carlos Castillo
 
 Profesor Asociado - Departamento de Sociología
 
-Director de Investigación y Publicaciones, Facultad de Ciencias Sociales
+Director de Investigación y Publicaciones 
+
+Facultad de Ciencias Sociales
 
 Universidad de Chile
 
-Investigador Principal COES
+Investigador Principal [COES](https://coes.cl/) / [NUDOS](https://www.nudos.cl/)
 
 Coordinador LISA 
 
-juancastillov@uchile.cl | jc-castillo.com</div> 
+juancastillov@uchile.cl | jc-castillo.com </div> 
       
     ')), header = image, footer = md(glue::glue('<a href="https://lisa-survey.formr.org/">Encuesta de Ciencia Abierta en Investigación Social (CAIS)</a>')),
   )
   
   # Personalizar el nombre del destinatario en el cuerpo del correo
   etiqueta_nombre <- "{nombre}"  # Etiqueta a reemplazar
+  etiqueta_cargo <- "{cargo}"
   email_template$body <- reemplazar_etiquetas(email_template$body, etiqueta_nombre, nombre)
   
   # Enviar el correo electrónico al destinatario actual
   email_template %>% 
     smtp_send(
       to = correo,
+      bcc = c('Kevin Carrasco' = 'kevin.carrasco@ug.uchile.cl'),
       from = c('Juan Carlos Castillo'= "juancastillov@uchile.cl"),
-      subject = "Invitación a participar en Encuesta sobre Ciencia Abierta",
+      subject = "Invitación a Participar en Encuesta sobre Ciencia Abierta",
       credentials = creds_file("gmail_creds")
     )
 }
 
 # Aplicar la función a cada fila del conjunto de datos
-pmap(list(destinatarios$nombre, destinatarios$correo), enviar_correo)
+pmap(list(destinatarios$nombre, destinatarios$correo, destinatarios$cargo), enviar_correo)
